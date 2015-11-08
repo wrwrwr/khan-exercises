@@ -43,6 +43,7 @@
                     return (POINT[1] &lt; SLOPE * POINT[0] + YINT) ? LESS_THAN : !LESS_THAN;
                 })()
                 </var>
+                <var id="POINT_SOLUTION_TEXT">POINT_SOLUTION ? "Yes" : "No"</var>
             </div>
 
             <p class="question">
@@ -180,30 +181,13 @@
 
                 <div class="render-answer-area-here"></div>
             </div>
-            <div class="solution" data-type="multiple">
-                <div class="instruction">
-                    <ul>
-                        <li>
-                            <label>
-                                <input id="yes" checked name="isSolution" type="radio">
-                                <span>Yes</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input id="no" name="isSolution" type="radio">
-                                <span>No</span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
 
+            <div class="solution" data-type="multiple">
                 <div class="sol" data-type="custom">
                     <div class="guess">[
                         graph.pointA.coord, graph.pointB.coord,
                         graph.pointA.coord[0] &gt; graph.pointB.coord[0] ? graph.shadetop : !graph.shadetop,
-                        graph.dasharray === "- " ? false : true,
-                        $("input[name='isSolution']:checked").attr("id")]
+                        graph.dasharray !== "- "]
                     </div>
                     <div class="validator-function">
                         if (_.isEqual(guess, [[-5, 5], [5, 5], false, true])) {
@@ -215,8 +199,7 @@
                         return abs( SLOPE - slope ) &lt; 0.001
                             &amp;&amp; abs( YINT - yint ) &lt; 0.001
                             &amp;&amp; guess[2] === LESS_THAN
-                            &amp;&amp; guess[3] === INCLUSIVE
-                            &amp;&amp; POINT_SOLUTION === (guess[4] === 'yes');
+                            &amp;&amp; guess[3] === INCLUSIVE;
                     </div>
                     <div class="show-guess">
                         graph.pointA.setCoord( guess[0] );
@@ -232,6 +215,13 @@
                         graph.update();
                     </div>
                 </div>
+                <div class="sol" data-type="radio">
+                    <var>POINT_SOLUTION_TEXT</var>
+                </div>
+                <ul class="choices" data-category="true">
+                    <li>Yes</li>
+                    <li>No</li>
+                </ul>
             </div>
         </div>
     </div>
