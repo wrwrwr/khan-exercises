@@ -1877,7 +1877,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     return {
                         empty: pass === "",
                         correct: pass === true,
-                        message: typeof pass === "string" ? pass : null,
+                        message: typeof pass === "string" && pass !== "" ? pass : null,
                         guess: guess
                     };
                 }
