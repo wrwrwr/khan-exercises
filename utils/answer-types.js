@@ -1184,20 +1184,12 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
             });
 
             return function(guess) {
-                var score = {
-                    empty: true,
-                    correct: true,
-                    message: null,
-                    guess: guess
-                };
-                var blockGradingMessage = null;
-
-                // If the answer is completely empty, don't grade it
-                if (checkIfAnswerEmpty(guess)) {
-                    score.empty = true;
-                    score.correct = false;
-                    return score;
-                }
+                var answered = true;  // Are all parts non-empty?
+                var correct = true;  // Are all non-empty parts correct?
+                // TODO(eater): This just forwards one message
+                var rightMessage = null;  // First from a correct part.
+                var wrongMessage = null;  // First from an incorrect part.
+                var emptyMessage = null;  // First from an empty part.
 
                 // Iterate over each of the elements in the guess
                 $.each(guess, function(i, g) {
@@ -1205,36 +1197,45 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     // with the corresponding validator
                     var pass = validators[i](g);
 
-                    if (pass.message && pass.empty) {
-                        // Special case where a validator returns a message
-                        // for an "empty" response. This probably means it's
-                        // not really empty, but a correct-but-not-simplified
-                        // answer. Rather that treating this as actually empty,
-                        // possibly leading to the entire multiple being marked
-                        // wrong for being incomplete, note the situation but
-                        // continue determining whether the entire answer is
-                        // otherwise correct or not before forwarding on the
-                        // message.
-                        blockGradingMessage = pass.message;
+                    if (pass.empty) {
+                        answered = false;
+                        emptyMessage = emptyMessage || pass.message;
                     } else {
-                        score.empty = score.empty && pass.empty;
-                        score.correct = score.correct && pass.correct;
-                        // TODO(eater): This just forwards one message
-                        score.message = score.message || pass.message;
+                        if (pass.correct) {
+                            rightMessage = rightMessage || pass.message;
+                        } else {
+                            correct = false;
+                            wrongMessage = wrongMessage || pass.message;
+                        }
                     }
                 });
 
-                if (score.correct && blockGradingMessage != null) {
-                    return {
-                        empty: true,
-                        correct: false,
-                        message: blockGradingMessage,
-                        guess: guess
-                    };
+                var message;
+                if (answered && correct) {
+                    // Technically, correct scores can carry a message.
+                    message = rightMessage;
+                } else if (correct) {
+                    // There are just empty and correct parts. Grade-blocking
+                    // lack of simplification (number without a data-simplfy)
+                    // is marked as empty, but carries a message.
+                    message = emptyMessage;
                 } else {
-                    score.empty = false;
-                    return score;
+                    // If any part is wrong, we only want to consider messages
+                    // about the reason for incorrectness.
+                    message = wrongMessage;
                 }
+
+                // If all parts are correct, the answer is correct.
+                // If some are correct, but some empty, consider it unanswered.
+                // If there is at least one incorrect part, grade incorrect.
+                return {
+                    empty: !answered && correct,
+                    // TODO(wrwrwr): Take care of the set validator too and let
+                    //               unanswered scores be (partially) correct.
+                    correct: answered && correct,
+                    message: message,
+                    guess: guess
+                };
             };
         }
     },

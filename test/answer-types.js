@@ -608,7 +608,7 @@
         start();
     });
 
-    asyncTest("multiple", 42, function() {
+    asyncTest("multiple", 48, function() {
         setupSolutionArea();
         var $problem = jQuery("#qunit-fixture .problem").append(
             "<p class='solution' data-type='multiple'>" +
@@ -623,8 +623,10 @@
         testMultipleAnswer(answerData, ["7", "3/2"], "right", "right answer is right");
         testMultipleAnswer(answerData, ["7", "1.5"], "right", "right answer is right");
         testMultipleAnswer(answerData, ["3/2", "7"], "wrong", "wrong answer is wrong");
-        testMultipleAnswer(answerData, ["7", ""], "wrong", "incomplete answer is wrong");
-        testMultipleAnswer(answerData, ["", "3/2"], "wrong", "incomplete answer is wrong");
+        testMultipleAnswer(answerData, ["7", ""], "empty", "incomplete answer is empty");
+        testMultipleAnswer(answerData, ["6", ""], "wrong", "partially wrong answer is wrong");
+        testMultipleAnswer(answerData, ["", "3/2"], "empty", "incomplete answer is empty");
+        testMultipleAnswer(answerData, ["", "5/2"], "wrong", "partially wrong answer is wrong");
         testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
         testMultipleAnswer(answerData, ["7", "6/4"], "empty-message", "unsimplified right answer provides a message");
         testMultipleAnswer(answerData, ["14/2", "6/4"], "empty-message", "unsimplified right gives message");
@@ -633,7 +635,7 @@
         testMultipleAnswer(answerData, ["14/2", "7"], "wrong", "unsimplified right and wrong is wrong");
         testMultipleAnswer(answerData, ["3", "6/4"], "wrong", "unsimplified right and wrong is wrong");
         testMultipleAnswer(answerData, ["4/2", "4/2"], "wrong", "unsimplified wrong is wrong");
-        testMultipleAnswer(answerData, ["14/2", ""], "wrong", "unsimplified imcomplete answer is wrong");
+        testMultipleAnswer(answerData, ["14/2", ""], "empty-message", "unsimplified imcomplete answer is empty");
 
         start();
     });
@@ -653,8 +655,8 @@
         testMultipleAnswer(answerData, ["7", "3/2"], "right", "right answer is right");
         testMultipleAnswer(answerData, ["7", "1.5"], "right", "right answer is right");
         testMultipleAnswer(answerData, ["3/2", "7"], "wrong", "wrong answer is wrong");
-        testMultipleAnswer(answerData, ["7", ""], "wrong", "incomplete answer is wrong");
-        testMultipleAnswer(answerData, ["", "3/2"], "wrong", "incomplete answer is wrong");
+        testMultipleAnswer(answerData, ["7", ""], "empty", "incomplete answer is empty");
+        testMultipleAnswer(answerData, ["", "3/2"], "empty", "incomplete answer is empty");
         testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
         testMultipleAnswer(answerData, ["7", "6/4"], "wrong-message", "unsimplified right answer provides a message");
         testMultipleAnswer(answerData, ["14/2", "6/4"], "wrong-message", "unsimplified right gives message");
@@ -695,8 +697,8 @@
         testMultipleAnswer(answerData, ["1", "7"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", "2"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", ""], "right", "right answer is right");
-        testMultipleAnswer(answerData, ["", "1"], "wrong", "incomplete answer is wrong");
-        testMultipleAnswer(answerData, ["", "2"], "wrong", "incomplete answer is wrong");
+        testMultipleAnswer(answerData, ["", "1"], "empty", "incomplete answer is empty");
+        testMultipleAnswer(answerData, ["", "2"], "wrong", "partially wrong answer is wrong");
         testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
 
         start();
@@ -718,8 +720,8 @@
         testMultipleAnswer(answerData, ["0", "7"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", "2"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", ""], "right", "right answer is right");
-        testMultipleAnswer(answerData, ["", "0"], "wrong", "incomplete answer is wrong");
-        testMultipleAnswer(answerData, ["", "2"], "wrong", "incomplete answer is wrong");
+        testMultipleAnswer(answerData, ["", "0"], "empty", "incomplete answer is empty");
+        testMultipleAnswer(answerData, ["", "2"], "wrong", "partially wrong answer is wrong");
         testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
 
         start();
@@ -743,7 +745,7 @@
         testMultipleAnswer(answerData, ["1", "7"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", "2"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", ""], "right", "right answer is right");
-        testMultipleAnswer(answerData, ["", "2"], "wrong", "incomplete answer is wrong");
+        testMultipleAnswer(answerData, ["", "2"], "wrong", "partially wrong answer is wrong");
         testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
 
         start();
@@ -767,8 +769,8 @@
         testMultipleAnswer(answerData, ["-1", "7"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", "2"], "wrong", "wrong answer is wrong");
         testMultipleAnswer(answerData, ["7", "-"], "right", "right answer is right");
-        testMultipleAnswer(answerData, ["7", ""], "wrong", "incomplete answer is wrong");
-        testMultipleAnswer(answerData, ["", "2"], "wrong", "incomplete answer is wrong");
+        testMultipleAnswer(answerData, ["7", ""], "empty", "incomplete answer is empty");
+        testMultipleAnswer(answerData, ["", "2"], "wrong", "partially wrong answer is wrong");
         testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
 
         start();
@@ -792,7 +794,7 @@
         testMultipleAnswer(answerData, ["1", ""], "right", "right answer is right");
         testMultipleAnswer(answerData, ["1", " "], "right", "right answer is right");
         testMultipleAnswer(answerData, ["", "1"], "right", "right answer is right");
-        testMultipleAnswer(answerData, ["", ""], "empty", "empty answer is empty");
+        testMultipleAnswer(answerData, ["", ""], "right", "right answer is right");
 
         start();
     });
