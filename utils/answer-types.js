@@ -1114,6 +1114,9 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                 // solutionarea
                 var solarea = $(this).empty();
 
+                // If it is a radio it also has choices as a sibling element.
+                $(this).next(".choices").remove();
+
                 // perform setup on each of the areas
                 var answerData = Khan.answerTypes[type].setup(solarea, sol);
 
@@ -1675,6 +1678,10 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
         createValidator: function(solution) {
             // TODO(emily): Remove this backwards compatible code sometime
             // after 8/2013
+            // TODO(wrwrwr): Multiple setup calls createValidator() with .sol
+            // elements of subproblems. Therefore, index and noneIsCorrect will
+            // be missing (index will actually be a jQuery-defined function).
+            // This should be resolved before removing the compatibility code.
             var correct = extractRawCode(solution.solution || solution);
 
             function showReal() {
@@ -1706,7 +1713,7 @@ Khan.answerTypes = $.extend(Khan.answerTypes, {
                     return score;
                 }
 
-                if (guess.index) {
+                if (guess.index && solution.noneIsCorrect !== undefined) {
                     // New solutions include information about the correct
                     // answer like the correct index, etc. We can use that to
                     // make checking a lot simpler.

@@ -841,6 +841,31 @@
         start();
     });
 
+    asyncTest("multiple with radio (category)", 12, function() {
+        setupSolutionArea();
+        var $problem = jQuery("#qunit-fixture .problem").append(
+            "<div class='solution' data-type='multiple'>" +
+                "<div class='sol' data-type='radio'>5<\/div>" +
+                "<ul class='choices' data-category='true'>" +
+                    "<li>6<\/li>" +
+                    "<li>5<\/li>" +
+                    "<li>7<\/li>" +
+                "<\/ul>" +
+            "<\/div>"
+        );
+
+        var answerData = Khan.answerTypes.multiple.setup($("#solutionarea"),
+                $problem.children(".solution"));
+
+        testMultipleAnswer(answerData, [false, true, false], "right", "right answer is right");
+        testMultipleAnswer(answerData, [false, false, false], "empty", "empty answer is empty");
+        testMultipleAnswer(answerData, [false, false, true], "wrong", "wrong answer is wrong");
+        testMultipleAnswer(answerData, [true, false, false], "wrong", "wrong answer is wrong");
+
+        start();
+    });
+
+
     asyncTest("set with no things", 15, function() {
         setupSolutionArea();
         var $problem = jQuery("#qunit-fixture .problem").append(
